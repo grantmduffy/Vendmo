@@ -11,14 +11,9 @@
 #
 # By default this script does nothing.
 
-# Print the IP address
-_IP=$(hostname -I) || true
-if [ "$_IP" ]; then
-  printf "My IP address is %s\n" "$_IP"
-fi
-
 cd /home/pi/Vendmo
 sudo git pull
+sudo cp rc.local /etc/rc.local
 sudo python3 web_server.py &
 
 exit 0
