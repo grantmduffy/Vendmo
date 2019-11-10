@@ -14,9 +14,9 @@ Bootstrap(app)
 
 if platform == 'linux':
     files_folder = '/home/pi/'
-    password_file = files_folder + 'password.txt'
 else:
-    password_file = 'password.txt'
+    files_folder = ''
+password_file = files_folder + 'password.txt'
 
 
 def get_password():
@@ -30,17 +30,19 @@ def get_password():
 
 
 def set_password(hashed_password):
-    with open('password.txt', 'w') as f:
+    with open(password_file, 'w') as f:
         f.write(hashed_password)
 
 
 class LoginForm(FlaskForm):
-    password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
+    password = PasswordField('Password', validators=[Length(min=0, max=80)])
 
 
 class SettingsForm(FlaskForm):
-    old_password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
-    new_password = PasswordField('password', validators=[InputRequired(), Length(min=6, max=80)])
+    old_password = PasswordField('Old Password', validators=[Length(min=0, max=80)])
+    new_password = PasswordField('New Password', validators=[Length(min=0, max=80)])
+    email_address = StringField('Email Address', validators=[Email()])
+    email_password = PasswordField('Email Password', validators=[Length(min=0, max=80)])
 
 
 @app.route('/')
@@ -65,14 +67,14 @@ def settings():
     settings_form = SettingsForm()
 
     if login_form.validate_on_submit():
-        print('Entered')
-        if check_password_hash(get_password(), login_form.password.data):
+        if login_form.password.data and check_password_hash(get_password(), login_form.password.data):
             return render_template('settings.html', form=settings_form)
 
     if settings_form.validate_on_submit():
-        if check_password_hash(get_password(), settings_form.old_password.data):
+        if settings_form.old_password.data and settings_form.new_password.data and\
+                check_password_hash(get_password(), settings_form.old_password.data):
             set_password(generate_password_hash(settings_form.new_password.data, method='sha256'))
-            return render_template('settings.html', form=settings_form)
+        return render_template('settings.html', form=settings_form)
 
     return render_template('login.html', form=login_form)
 
