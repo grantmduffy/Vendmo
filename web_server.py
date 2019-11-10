@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-import subprocess
+from subprocess import Popen
 from sys import platform
 
 app = Flask(__name__)
@@ -13,8 +13,9 @@ def home():
 @app.route('/reboot')
 def reboot():
     if platform == 'linux':
-        # TODO: Schedule reboot and do cleanup
-        subprocess.call('shutdown -r -t sec 5')
+        Popen('sleep 5s;sudo reboot', shell=True)
+        # TODO: do cleanup
+        exit()
     else:
         print('Reboot Raspberry Pi...')
     return '<h1>Rebooting Raspberry Pi...</h1>' \
