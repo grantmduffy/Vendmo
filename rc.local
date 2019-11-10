@@ -12,7 +12,9 @@
 # By default this script does nothing.
 
 cd /home/pi/Vendmo
-sudo git pull
+git pull
+git reset --hard
+git checkout master
 sudo cp rc.local /etc/rc.local
 sudo python3 web_server.py &
 
