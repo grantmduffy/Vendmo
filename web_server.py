@@ -14,7 +14,7 @@ def home():
 def reboot():
     if platform == 'linux':
         # TODO: Schedule reboot and do cleanup
-        subprocess.call('reboot')
+        subprocess.call('shutdown -r -t sec 5')
     else:
         print('Reboot Raspberry Pi...')
     return '<h1>Rebooting Raspberry Pi...</h1>' \
