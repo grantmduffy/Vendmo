@@ -6,6 +6,7 @@ from wtforms.validators import InputRequired, Email, Length
 from subprocess import Popen
 from sys import platform
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'shhh! this is secret!'
@@ -56,17 +57,6 @@ def reboot():
         print('Reboot Raspberry Pi...')
     return '<h1>Rebooting Raspberry Pi...</h1>' \
            '<a href="/">home</a>'
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if check_password_hash(get_password(), form.password.data):
-            return redirect(url_for('settings'))
-        else:
-            return '<h2>Invalid Password</h2><a href="/login">return</a>'
-    return render_template('login.html', form=form)
 
 
 @app.route('/settings', methods=['GET', 'POST'])

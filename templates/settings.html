@@ -1,17 +1,20 @@
 {% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Vendmo</title>
-</head>
-<body>
-<h1>Settings</h1>
-    <form method="POST" action="/settings">
-        <h2>Old Password</h2>
+{% block content %}
+<form method="POST" action="/settings">
+    <div class="container">
+        <h1>Settings</h1>
         {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.old_password) }}
-        <h2>New Password</h2>
-        {{ wtf.form_field(form.new_password) }}
-        <button type="submit">Update Settings</button>
-    </form>
-</body>
+        <div class="row">
+            <div class="col-md-2"><h3>Old Password</h3></div>
+            <div class="col-xs-10">{{ wtf.form_field(form.old_password) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><h3>New Password</h3></div>
+            <div class="col-xs-10">{{ wtf.form_field(form.new_password) }}</div>
+        </div>
+        <div class="row"><button type="submit">Update Settings</button></div>
+    </div>
+</form>
+{% endblock %}

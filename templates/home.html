@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Vendmo</title>
-</head>
-<body>
-<h1>This is the home page</h1>
-<a href="login">Change Settings</a>
-<a href="reboot">Reboot Pi</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>This is the home page</h1>
+    <a href="settings">Change Settings</a>
+    <a href="reboot">Reboot Pi</a>
+{% endblock %}
