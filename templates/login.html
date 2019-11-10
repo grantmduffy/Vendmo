@@ -1,0 +1,14 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vendmo</title>
+</head>
+<body>
+    <form method="POST" action="/settings">
+        <h2>Enter Password</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.password) }}
+        <button type="submit">Enter</button>
+    </form>
+</body>
