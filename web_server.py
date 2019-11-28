@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
 from wtforms import StringField, BooleanField, PasswordField
@@ -57,8 +57,10 @@ class SettingsForm(FlaskForm):
     email_password = PasswordField('Email Password', validators=[Length(min=0, max=80)])
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST' and loads(request.data)['dispense']:
+        print('Dispense Beer')
     return render_template('home.html')
 
 

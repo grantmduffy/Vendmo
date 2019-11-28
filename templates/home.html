@@ -1,7 +1,20 @@
+{% import "bootstrap/wtf.html" as wtf %}
 {% extends "base.html" %}
 
 {% block content %}
+    <script>
+        function dispense_beer(){
+            var req = new XMLHttpRequest();
+            req.open("POST", "/", true);
+            req.setRequestHeader("Content-Type", "application/json")
+            req.send(JSON.stringify({
+                    dispense: true
+                }));
+        }
+    </script>
+
     <h1>This is the home page</h1>
     <a href="settings">Change Settings</a>
     <a href="reboot">Reboot Pi</a>
+    <button class="btn btn-outline-primary" onclick="dispense_beer()">Dispense Beer</button>
 {% endblock %}
