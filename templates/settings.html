@@ -3,7 +3,7 @@
 
 {% block content %}
 <form method="POST" action="/settings">
-    <div class="container">
+    <div class="container form-group">
         <h1>Settings</h1>
         {{ form.hidden_tag() }}
         <div class="row">
@@ -22,7 +22,8 @@
             <div class="col-md-2"><h3>Email Password</h3></div>
             <div class="col-xs-10">{{ wtf.form_field(form.email_password) }}</div>
         </div>
-        <div class="row"><button type="submit">Update Settings</button></div>
+        <div class="row"><button class="btn btn-outline-secondary" type="submit">Update Settings</button></div>
+    <a href="/">home</a>
     </div>
 </form>
 {% endblock %}
