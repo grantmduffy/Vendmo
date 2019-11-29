@@ -8,6 +8,7 @@ from sys import platform
 from werkzeug.security import generate_password_hash, check_password_hash
 from json import dumps, loads
 import os
+from servo import move_servo_to, dispense_beer
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'shhh! this is secret!'
@@ -61,6 +62,7 @@ class SettingsForm(FlaskForm):
 def home():
     if request.method == 'POST' and loads(request.data)['dispense']:
         print('Dispense Beer')
+        dispense_beer()
     return render_template('home.html')
 
 

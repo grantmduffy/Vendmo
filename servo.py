@@ -1,14 +1,14 @@
 from sys import platform
 from time import sleep
 
-serovo_pin = 18
-open_pos, closed_pos = 1, 0.5
+servo_pin = 18
+open_pos, closed_pos = 1.0, 0.0
 delay = 1.0
 
 if platform == 'linux':
     import wiringpi as wp
     wp.wiringPiSetupGpio()
-    wp.pinMode(serovo_pin, wp.GPIO.PWM_OUTPUT)
+    wp.pinMode(servo_pin, wp.GPIO.PWM_OUTPUT)
     wp.pwmSetMode(wp.GPIO.PWM_MODE_MS)
     wp.pwmSetClock(192)
     wp.pwmSetRange(2000)
@@ -16,9 +16,9 @@ if platform == 'linux':
 
 def move_servo_to(pos):
     if platform == 'linux':
-        wp.pwmWrite(serovo_pin, int(pos * 200 + 50))
+        wp.pwmWrite(servo_pin, int(pos * 200 + 50))
     else:
-        print('Move servo to {pos}')
+        print(f'Move servo to {pos}')
 
 
 def dispense_beer():
