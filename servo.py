@@ -2,7 +2,7 @@ from sys import platform
 from time import sleep
 
 servo_pin = 18
-open_pos, closed_pos = 1.0, 0.0
+open_pos, closed_pos = 0.0, 1.0
 delay = 1.0
 
 if platform == 'linux':
