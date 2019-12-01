@@ -68,9 +68,6 @@ def settings():
 
 @app.route('/transactions')
 def transactions():
-    venmos = check_venmos()
-    new_transactions = [(actor, amount, False) for actor, amount in venmos]
-    add_transactions(new_transactions)
     return render_template('transactions.html', table=get_transactions().to_html(classes='table'))
 
 

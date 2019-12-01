@@ -3,7 +3,8 @@ from time import sleep
 
 servo_pin = 18
 open_pos, closed_pos = 0.0, 1.0
-delay = 1.0
+motor_delay = 0.5
+grab_delay = 5.0
 
 
 def move_servo_to(pos):
@@ -15,8 +16,9 @@ def move_servo_to(pos):
 
 def dispense_beer():
     move_servo_to(open_pos)
-    sleep(delay)
+    sleep(motor_delay)
     move_servo_to(closed_pos)
+    sleep(grab_delay)
 
 
 if platform == 'linux':
