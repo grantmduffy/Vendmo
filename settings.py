@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 from json import dumps, loads
 from sys import platform
 
@@ -6,9 +5,11 @@ from sys import platform
 class Settings:
 
     defaults = {
-        'password': generate_password_hash('Vendmo', method='sha256'),
-        'email_address': '',
-        'email_password': ''
+        'password': 'Vendmo',
+        'email_address': 'vendmochine@gmail.com',
+        'email_password': 'raspberrybeer',
+        'imap_server': 'imap.gmail.com',
+        'user_phrase': 'beer me'
     }
     file = 'settings.json'
 
