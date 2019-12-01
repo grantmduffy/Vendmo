@@ -9,7 +9,8 @@ class Settings:
         'email_address': 'vendmochine@gmail.com',
         'email_password': 'raspberrybeer',
         'imap_server': 'imap.gmail.com',
-        'user_phrase': 'beer me'
+        'user_phrase': 'beer me',
+        'price': 1.0
     }
     file = 'settings.json'
 

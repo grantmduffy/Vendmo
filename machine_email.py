@@ -1,10 +1,15 @@
 import imaplib
 from settings import Settings
+from time import sleep
+from transactions import add_transactions
 
 s = Settings()
 
 mail = imaplib.IMAP4_SSL(s.imap_server)
 mail.login(s.email_address, s.email_password)
+
+run = True
+refresh_rate = 5
 
 
 def parse_header(data):
@@ -27,9 +32,18 @@ def check_venmos():
         h = parse_header(data)
         actor, amount = h['Subject'].split(' paid you $')
         actor = actor.replace('Fwd: ', '').strip()
-        venmos.append((actor.strip(), float(amount)))
+        venmos.append((actor.strip(), float(amount), False))
     return venmos
 
 
+def receipt_daemon():
+    while run:
+        venmos = check_venmos()
+        if venmos:
+            add_transactions(venmos)
+            print(venmos)
+        sleep(refresh_rate)
+
+
 if __name__ == '__main__':
-    print(check_venmos())
+    receipt_daemon()
