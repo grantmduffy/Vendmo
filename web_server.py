@@ -7,7 +7,6 @@ from subprocess import Popen
 from sys import platform
 from werkzeug.security import generate_password_hash, check_password_hash
 from json import dumps, loads
-import os
 from servo import move_servo_to, dispense_beer
 from settings import Settings
 
