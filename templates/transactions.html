@@ -1,0 +1,12 @@
+{% import "bootstrap/wtf.html" as wtf %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Transactions</h1>
+    <a href="transactions" class="btn btn-primary">Get Transactions</a>
+    <div>
+        {{ table|safe }}
+    </div>
+</div>
+{% endblock %}

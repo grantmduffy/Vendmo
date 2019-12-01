@@ -9,6 +9,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from json import dumps, loads
 from servo import move_servo_to, dispense_beer
 from settings import Settings
+from transactions import get_transactions, add_transactions
+from machine_email import check_venmos
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'shhh! this is secret!'
@@ -62,6 +64,14 @@ def settings():
         return render_template('settings.html', form=settings_form)
 
     return render_template('login.html', form=login_form)
+
+
+@app.route('/transactions')
+def transactions():
+    venmos = check_venmos()
+    new_transactions = [(actor, amount, False) for actor, amount in venmos]
+    add_transactions(new_transactions)
+    return render_template('transactions.html', table=get_transactions().to_html(classes='table'))
 
 
 if __name__ == '__main__':

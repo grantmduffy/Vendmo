@@ -34,7 +34,15 @@ def add_transactions(transactions):
 def get_incomplete(complete=True):
     df = get_transactions()
     incomplete = df[df['Completed'] == False]
-    df[df['Completed'] == False] = complete
+    df['Completed'][df['Completed'] == False] = complete
     save_transactions(df)
     return incomplete
 
+
+if __name__ == '__main__':
+    df = pd.DataFrame([['Grant', 1.0, False], ['Sam', 1.0, True]],
+                      columns=['Actor', 'Amount', 'Completed'])
+    print(df)
+    # df['Completed'][df['Completed'] == False] = True
+    save_transactions(df)
+    print(df)

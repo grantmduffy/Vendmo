@@ -7,14 +7,6 @@ mail = imaplib.IMAP4_SSL(s.imap_server)
 mail.login(s.email_address, s.email_password)
 
 
-def print_tree(e, n=0):
-    print('\t' * n, e)
-    if e.text:
-        print('\t' * n, e.text.strip())
-    for c in e:
-        print_tree(c, n + 1)
-
-
 def parse_header(data):
     data = data.replace('\r\n ', ' ')
     out = [x.split(':', 1) for x in data.split('\r\n') if x]
@@ -23,8 +15,10 @@ def parse_header(data):
 
 def check_venmos():
     mail.select('inbox')
+    # _, ids = mail.search(None, '(OR FROM venmo@venmo.com FROM grantmduffy@gmail.com '
+    #                            f'SUBJECT "paid you" BODY "{s.user_phrase}" UNSEEN)')
     _, ids = mail.search(None, '(OR FROM venmo@venmo.com FROM grantmduffy@gmail.com '
-                               f'SUBJECT "paid you" BODY "{s.user_phrase}" UNSEEN)')
+                               f'SUBJECT "paid you" UNSEEN)')
     ids = ids[0].split()
     venmos = []
     for id in ids:
