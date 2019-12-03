@@ -1,7 +1,6 @@
 import imaplib
 from settings import Settings
-from time import sleep
-from transactions import add_transactions, make_transaction
+from transactions import make_transaction
 
 s = Settings()
 
@@ -34,16 +33,3 @@ def check_venmos():
         actor = actor.replace('Fwd: ', '').strip()
         venmos.append(make_transaction(actor.strip(), float(amount)))
     return venmos
-
-
-def receipt_daemon():
-    while run:
-        venmos = check_venmos()
-        if venmos:
-            add_transactions(venmos)
-            print(venmos)
-        sleep(refresh_rate)
-
-
-if __name__ == '__main__':
-    receipt_daemon()
