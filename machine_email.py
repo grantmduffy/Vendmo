@@ -1,7 +1,7 @@
 import imaplib
 from settings import Settings
 from time import sleep
-from transactions import add_transactions
+from transactions import add_transactions, make_transaction
 
 s = Settings()
 
@@ -32,7 +32,7 @@ def check_venmos():
         h = parse_header(data)
         actor, amount = h['Subject'].split(' paid you $')
         actor = actor.replace('Fwd: ', '').strip()
-        venmos.append((actor.strip(), float(amount), False))
+        venmos.append(make_transaction(actor.strip(), float(amount)))
     return venmos
 
 

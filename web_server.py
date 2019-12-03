@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from json import dumps, loads
 from servo import move_servo_to, dispense_beer
 from settings import Settings
-from transactions import get_transactions, add_transactions
+from transactions import get_html
 from machine_email import check_venmos
 
 app = Flask(__name__)
@@ -68,7 +68,7 @@ def settings():
 
 @app.route('/transactions')
 def transactions():
-    return render_template('transactions.html', table=get_transactions().to_html(classes='table'))
+    return render_template('transactions.html', table=get_html())
 
 
 if __name__ == '__main__':

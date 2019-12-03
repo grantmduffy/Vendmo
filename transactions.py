@@ -2,10 +2,11 @@ from threading import Lock
 from sys import platform
 import pickle
 import pandas as pd
+import json
 
 lock = Lock()
 
-file = 'transactions.pkl'
+file = 'transactions.json'
 if platform == 'linux':
     file = '/home/pi/' + file
 
@@ -13,36 +14,52 @@ if platform == 'linux':
 def get_transactions():
     try:
         with lock:
-            return pd.read_pickle(file)
+            with open(file, 'r') as f:
+                return json.load(f)
     except FileNotFoundError:
-        save_transactions(pd.DataFrame(columns=['Actor', 'Amount', 'Completed']))
+        save_transactions([])
         return get_transactions()
 
 
 def save_transactions(transactions):
     with lock:
-        pd.to_pickle(transactions, file)
+        with open(file, 'w') as f:
+            json.dump(transactions, f)
 
 
-def add_transactions(transactions):
-    df = get_transactions()
-    df = df.append(pd.DataFrame(transactions, columns=['Actor', 'Amount', 'Completed']))
-    with lock:
-        df.to_pickle(file)
+def add_transactions(new_transactions):
+    transactions = get_transactions()
+    try:
+        transactions += new_transactions
+    except TypeError:
+        transactions += [new_transactions]
+    save_transactions(transactions)
 
 
 def get_incomplete(complete=True):
-    df = get_transactions()
-    incomplete = df[df['Completed'] == False]
-    df['Completed'][df['Completed'] == False] = complete
-    save_transactions(df)
+    transactions = get_transactions()
+    incomplete = list(filter(lambda t: not t['Complete'], transactions))
+    for t in incomplete:
+        t['Complete'] = complete
+    save_transactions(transactions)
     return incomplete
 
 
+def get_html(classes='table'):
+    return pd.concat([pd.DataFrame.from_dict({key: [value] for (key, value) in t.items()})
+                      for t in get_transactions()], ignore_index=True).to_html(classes=classes)
+
+
+def make_transaction(actor, amount, complete=False):
+    return {'Actor': actor, 'Amount': amount, 'Complete': complete}
+
+
 if __name__ == '__main__':
-    df = pd.DataFrame([['Grant', 1.0, False], ['Sam', 1.0, True]],
-                      columns=['Actor', 'Amount', 'Completed'])
-    print(df)
-    # df['Completed'][df['Completed'] == False] = True
-    save_transactions(df)
-    print(df)
+    test_transactions = [
+        {'Actor': 'Grant Duffy', 'Amount': 1.0, 'Complete': False},
+        {'Actor': 'Tom Duffy', 'Amount': 1.0, 'Complete': False},
+        {'Actor': 'Grant Peltier', 'Amount': 1.0, 'Complete': False},
+    ]
+
+    add_transactions(test_transactions)
+    print(get_html())
