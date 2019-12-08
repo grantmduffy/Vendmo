@@ -5,6 +5,7 @@ from sys import platform
 class Settings:
 
     defaults = {
+        'username': 'super',
         'password': 'Vendmo',
         'email_address': 'vendmochine@gmail.com',
         'email_password': 'raspberrybeer',
