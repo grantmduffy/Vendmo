@@ -5,6 +5,8 @@ from settings import Settings
 from transactions import get_html
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
+from time import sleep
+import os
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -14,8 +16,9 @@ s = Settings()
 app.config['SECRET_KEY'] = 'shhh! this is secret!'
 app.config['BASIC_AUTH_USERNAME'] = s.username
 app.config['BASIC_AUTH_PASSWORD'] = s.password
-
 auth = BasicAuth(app)
+
+wifi_config_loc = '/boot/wpa_supplicant.conf'
 
 
 class UserForm(FlaskForm):
@@ -58,7 +61,19 @@ def settings():
     if wifi_form.validate():
         ssid = wifi_form.ssid.data
         password = wifi_form.password.data
-        print(ssid, password)
+        with open(wifi_config_loc, 'w') as f:
+            f.write(
+                'ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n'
+                'update_config=1\n'
+                'country=US\n'
+                'network={\n'
+                f'   ssid="{ssid}"\n'
+                f'   psk="{password}"\n'
+                '   key_mgmt=WPA-PSK\n'
+                '}\n'
+            )
+        sleep(3)
+        os.system('sudo reboot')
 
     return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
 
