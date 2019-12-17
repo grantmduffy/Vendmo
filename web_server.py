@@ -7,6 +7,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, Form
 from time import sleep
 from sys import platform
+from servo import dispense_beer
+from threading import Thread
+import json
 import os
 
 app = Flask(__name__)
@@ -38,6 +41,16 @@ class WifiForm(FlaskForm):
     ssid = StringField('Wifi SSID')
     password = PasswordField('Password')
     submit = SubmitField('Update')
+
+
+def restart_pi(delay=3):
+    def helper():
+        sleep(delay)
+        os.system('sudo reboot')
+    if platform == 'linux':
+        Thread(target=helper).start()
+    else:
+        print('Restarting...')
 
 
 @app.route('/')
@@ -104,8 +117,7 @@ def update_wifi():
                     '   key_mgmt=WPA-PSK\n'
                     '}\n'
                 )
-            sleep(3)
-            os.system('sudo reboot')
+            restart_pi()
         print('WiFi Updated')
     return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
 
@@ -113,6 +125,20 @@ def update_wifi():
 @app.route('/transactions')
 def transactions():
     return render_template('transactions.html', table=get_html())
+
+
+@app.route('/dispense', methods=['POST'])
+@auth.required
+def dispense():
+    dispense_beer()
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+
+
+@app.route('/restart', methods=['POST'])
+@auth.required
+def restart():
+    restart_pi()
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 if __name__ == '__main__':

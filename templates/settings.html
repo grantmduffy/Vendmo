@@ -4,6 +4,24 @@
 {% block content %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+    function dispense(){
+        var req = new XMLHttpRequest();
+        req.open("POST", "/dispense", true);
+        req.setRequestHeader("Content-Type", "application/json")
+        req.send(JSON.stringify({
+                dispense: true
+            }));
+    }
+    function restart(){
+        var req = new XMLHttpRequest();
+        req.open("POST", "/restart", true);
+        req.setRequestHeader("Content-Type", "application/json")
+        req.send(JSON.stringify({
+                restart: true
+            }));
+    }
+</script>
+<script>
     $(document).ready(function(){
 
         $('#userLogin').on('submit', function(e) {
@@ -147,6 +165,17 @@
                 </form>
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Controls</h3></div>
+            <div class="panel-body">
+                <div class="panel">
+                    <button class="btn btn-primary" onclick="dispense()">Dispense Beer</button>
+                    <button class="btn btn-danger" onclick="restart()">Restart Machine</button>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
 </div>

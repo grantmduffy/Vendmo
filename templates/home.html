@@ -2,20 +2,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <script>
-        function dispense_beer(){
-            var req = new XMLHttpRequest();
-            req.open("POST", "/", true);
-            req.setRequestHeader("Content-Type", "application/json")
-            req.send(JSON.stringify({
-                    dispense: true
-                }));
-        }
-    </script>
     <div class="container">
         <h1>Vendmo Home</h1>
-        <a href="settings" class="btn btn-primary">Change Settings</a>
-        <a href="reboot" class="btn btn-danger">Reboot Pi</a>
-        <button class="btn btn-success" onclick="dispense_beer()">Dispense Beer</button>
+        <a href="settings" class="btn btn-info">Change Settings</a>
     </div>
 {% endblock %}
