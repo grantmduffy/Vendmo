@@ -16,7 +16,7 @@ def get_transactions():
         with lock:
             with open(file, 'r') as f:
                 return json.load(f)
-    except FileNotFoundError or json.decoder.JSONDecodeError:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         save_transactions([])
         return get_transactions()
 
