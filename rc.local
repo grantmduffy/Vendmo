@@ -16,6 +16,6 @@ git reset --hard
 git checkout master
 git pull
 sudo cp rc.local /etc/rc.local
-sudo python3 run_main.py &> /home/pi/main_output.log &
+sudo python3 run_main.py 1> /home/pi/main_output.log 2>&1 &
 
 exit 0
