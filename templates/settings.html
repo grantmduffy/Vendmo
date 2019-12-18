@@ -69,6 +69,21 @@
             });
         });
 
+        $('#venmoInfo').on('submit', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var method = $(this).attr('method');
+            var data = $(this).serialize();
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: data
+            }).success(function(response){
+                $('#venmoModal').modal('show');
+            });
+        });
+
     });
 </script>
 <div class="container">
@@ -167,6 +182,40 @@
         </div>
 
         <div class="panel panel-default">
+            <div class="panel-heading"><h3>Venmo Settings</h3></div>
+            <div class="panel-body">
+                <form method="POST" action="/update_venmo" id="venmoInfo">
+                    {{ venmo_form.hidden_tag() }}
+                    <div class="panel">
+                        <div class="form-group">
+                            {{ venmo_form.price.label }}
+                            {{ venmo_form.price(class='form-control') }}
+                        </div>
+                        <div class="form-group">
+                            {{ venmo_form.phrase.label }}
+                            {{ venmo_form.phrase(class='form-control') }}
+                        </div>
+                        <div class="form-group">
+                            {{ venmo_form.venmo_user.label }}
+                            {{ venmo_form.venmo_user(class='form-control') }}
+                        </div>
+                        <div class="form-group">
+                            {{ venmo_form.submit(class='btn btn-primary') }}
+                        </div>
+                        <div class="modal fade" id="venmoModal" role="alert">
+                            <div class="modal-dialog">
+                                <div class="modal-body">
+                                    <h3 class="text-center">Venmo Information Updated!</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default">
             <div class="panel-heading"><h3>Controls</h3></div>
             <div class="panel-body">
                 <div class="panel">
@@ -175,7 +224,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
 </div>

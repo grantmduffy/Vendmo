@@ -11,7 +11,8 @@ class Settings:
         'email_password': 'raspberrybeer',
         'imap_server': 'imap.gmail.com',
         'user_phrase': 'beer me',
-        'price': 1.0
+        'price': 1.0,
+        'venmo_user': '@Grant-Duffy-2'
     }
     file = 'settings.json'
 

@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 from settings import Settings
 from transactions import get_html
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, Form
+from wtforms import StringField, PasswordField, SubmitField, FloatField
 from time import sleep
 from sys import platform
 from servo import dispense_beer
@@ -43,6 +43,13 @@ class WifiForm(FlaskForm):
     submit = SubmitField('Update')
 
 
+class VenmoForm(FlaskForm):
+    venmo_user = StringField('Venmo User ID')
+    price = FloatField('Set Price')
+    phrase = StringField('Set Phrase')
+    submit = SubmitField('Update')
+
+
 def restart_pi(delay=3):
     def helper():
         sleep(delay)
@@ -65,7 +72,9 @@ def settings():
     user_form = UserForm()
     email_form = EmailForm()
     wifi_form = WifiForm()
-    return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
+    venmo_form = VenmoForm()
+    return render_template('settings.html', user_form=user_form, email_form=email_form,
+                           wifi_form=wifi_form, venmo_form=venmo_form)
 
 
 @app.route('/update_login', methods=['POST'])
@@ -80,27 +89,23 @@ def update_login():
         app.config['BASIC_AUTH_USERNAME'] = s.username
         app.config['BASIC_AUTH_PASSWORD'] = s.password
         print('Login Updated')
-    return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @app.route('/update_email', methods=['POST'])
 @auth.required
 def update_email():
-    user_form = UserForm()
     email_form = EmailForm()
-    wifi_form = WifiForm()
     if email_form.validate_on_submit():
         s.email_address = email_form.address.data
         s.email_password = email_form.password.data
         print('Email Updated')
-    return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @app.route('/update_wifi', methods=['POST'])
 @auth.required
 def update_wifi():
-    user_form = UserForm()
-    email_form = EmailForm()
     wifi_form = WifiForm()
     if wifi_form.validate_on_submit():
         ssid = wifi_form.ssid.data
@@ -119,7 +124,21 @@ def update_wifi():
                 )
             restart_pi()
         print('WiFi Updated')
-    return render_template('settings.html', user_form=user_form, email_form=email_form, wifi_form=wifi_form)
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/update_venmo', methods=['POST'])
+@auth.required
+def update_venmo():
+    venmo_form = VenmoForm()
+    if venmo_form.validate_on_submit():
+        venmo_user = venmo_form.venmo_user.data
+        price = venmo_form.price.data
+        phrase = venmo_form.phrase.data
+        s.price = price
+        s.user_phrase = phrase
+        s.venmo_user = venmo_user
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
 @app.route('/transactions')
