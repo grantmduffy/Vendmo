@@ -7,8 +7,8 @@ import json
 lock = Lock()
 
 file = 'transactions.json'
-if platform == 'linux':
-    file = '/home/pi/' + file
+# if platform == 'linux':
+#     file = '/home/pi/' + file
 
 
 def get_transactions():
@@ -16,7 +16,7 @@ def get_transactions():
         with lock:
             with open(file, 'r') as f:
                 return json.load(f)
-    except (FileNotFoundError, json.decoder.JSONDecodeError):
+    except FileNotFoundError:
         save_transactions([])
         return get_transactions()
 
