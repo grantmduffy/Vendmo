@@ -115,11 +115,10 @@ def update_wifi():
                 f.write(
                     'ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n'
                     'update_config=1\n'
-                    'country=US\n'
+                    'country=US\n\n'
                     'network={\n'
                     f'   ssid="{ssid}"\n'
                     f'   psk="{password}"\n'
-                    '   key_mgmt=WPA-PSK\n'
                     '}\n'
                 )
             restart_pi()

@@ -7,15 +7,16 @@ import json
 lock = Lock()
 
 file = 'transactions.json'
-# if platform == 'linux':
-#     file = '/home/pi/' + file
 
 
 def get_transactions():
     try:
         with lock:
             with open(file, 'r') as f:
-                return json.load(f)
+                string = f.read()
+                if not string:
+                    raise FileNotFoundError()
+                return json.load(string)
     except FileNotFoundError:
         save_transactions([])
         return get_transactions()
