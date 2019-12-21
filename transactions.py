@@ -16,7 +16,7 @@ def get_transactions():
                 string = f.read()
                 if not string:
                     raise FileNotFoundError()
-                return json.load(string)
+                return json.loads(string)
     except FileNotFoundError:
         save_transactions([])
         return get_transactions()
