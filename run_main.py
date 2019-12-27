@@ -1,7 +1,7 @@
 from threading import Thread
 from machine_email import check_venmos
 from web_server import app
-from transactions import add_transactions, get_incomplete
+from transactions import add_transaction
 from servo import dispense_beer
 from time import sleep
 from settings import Settings
@@ -14,13 +14,11 @@ s = Settings()
 def worker():
     while run:
         venmos = check_venmos()
-        if venmos:
-            add_transactions(venmos)
-        for t in get_incomplete():
-            # TODO: Drive LCD
-            if t['Amount'] >= s.price:
-                print(f'This beer is for {t["Actor"]}')
+        for venmo in venmos:
+            if venmo['Amount'] >= s.price:
                 dispense_beer()
+                # TODO: Drive LCD
+            add_transaction(venmo)
         sleep(refresh_rate)
 
 
