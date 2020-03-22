@@ -19,7 +19,7 @@ def parse_header(data):
 
 def check_venmos():
     mail.select('inbox')
-    # _, ids = mail.search(None, '(OR FROM venmo@venmo.com FROM grantmduffy@gmail.com '
+    # _, ids = mail.search(None, '(;[p-?  \\|OM venmo@venmo.com FROM grantmduffy@gmail.com '
     #                            f'SUBJECT "paid you" BODY "{s.user_phrase}" UNSEEN)')
     _, ids = mail.search(None, '(OR FROM venmo@venmo.com FROM grantmduffy@gmail.com '
                                f'SUBJECT "paid you" UNSEEN)')
@@ -31,5 +31,6 @@ def check_venmos():
         h = parse_header(data)
         actor, amount = h['Subject'].split(' paid you $')
         actor = actor.replace('Fwd: ', '').strip()
+        print(actor, amount)
         venmos.append(make_transaction(actor.strip(), float(amount)))
     return venmos
