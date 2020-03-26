@@ -1,7 +1,7 @@
 from sys import platform
 from time import sleep
 
-servo_pin = 24
+servo_pin = 12
 open_pos, closed_pos = 0.0, 1.0
 motor_delay = 0.5
 grab_delay = 5.0

@@ -90,6 +90,9 @@ mail = imaplib.IMAP4_SSL(s.imap_server)
 mail.login(s.email_address, s.email_password)
 mail.select('inbox')
 
+idle_phrase = f'Venmo {s.venmo_user} ${s.price}\nwith "{s.user_phrase}" in the caption'
+update(idle_phrase)
+
 
 while True:
     try:
@@ -105,7 +108,7 @@ while True:
                 print(f'DISPENSE BEER FOR "{p.actor}"')
                 update(f'Dispense beer for:\n"{p.actor}"')
                 dispense_beer()
-                TFT.clear()
+                update(idle_phrase)
         sleep(5)
     except Exception as e:
         print(e)
