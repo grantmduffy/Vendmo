@@ -7,7 +7,7 @@ from time import sleep
 from sys import platform
 if platform == 'linux':
     import wiringpi as wp
-    from display import update
+    from display import update, TFT
 
 
 class EmailParser(HTMLParser, ABC):
@@ -105,6 +105,7 @@ while True:
                 print(f'DISPENSE BEER FOR "{p.actor}"')
                 update(f'Dispense beer for:\n"{p.actor}"')
                 dispense_beer()
+                TFT.clear()
         sleep(5)
     except Exception as e:
         print(e)
