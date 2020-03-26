@@ -7,7 +7,7 @@ from time import sleep
 from sys import platform
 if platform == 'linux':
     import wiringpi as wp
-    import display
+    from display import update
 
 
 class EmailParser(HTMLParser, ABC):
@@ -103,6 +103,7 @@ while True:
             print(p)
             if p.amount >= s.price and s.user_phrase.lower() in p.note.lower():
                 print(f'DISPENSE BEER FOR "{p.actor}"')
+                update(f'Dispense beer for:\n"{p.actor}"')
                 dispense_beer()
         sleep(5)
     except Exception as e:
