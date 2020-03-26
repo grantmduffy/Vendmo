@@ -9,7 +9,7 @@ DC = 24
 RST = 25
 LED = 15
 
-font = ImageFont.truetype('Roboto-Regular.ttf', size=30)
+font = ImageFont.truetype('Roboto-Regular.ttf', size=20)
 
 TFT = TFT24T(spidev.SpiDev(), GPIO, landscape=True)
 TFT.initLCD(DC, RST, LED)
