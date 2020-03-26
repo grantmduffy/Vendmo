@@ -7,6 +7,7 @@ from time import sleep
 from sys import platform
 if platform == 'linux':
     import wiringpi as wp
+    import display
 
 
 class EmailParser(HTMLParser, ABC):
