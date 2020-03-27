@@ -5,9 +5,10 @@ import quopri
 from html.parser import HTMLParser
 from time import sleep
 from sys import platform
+import email
 if platform == 'linux':
     import wiringpi as wp
-    from display import update, TFT
+    from display import idle_screen, dispense_screen, load_qr
 
 
 class EmailParser(HTMLParser, ABC):
@@ -90,9 +91,18 @@ mail = imaplib.IMAP4_SSL(s.imap_server)
 mail.login(s.email_address, s.email_password)
 mail.select('inbox')
 
-idle_phrase = f'Venmo {s.venmo_user} ${s.price:.2f}\nwith "{s.user_phrase}" in the caption'
-update(idle_phrase)
-
+_, data = mail.fetch(id, '(RFC822)')
+e = email.message_from_bytes(data[0][1])
+for part in e.walk():
+    if part.get_content_maintype() == 'image':
+        fname = part.get_filename()
+        with open(fname, 'wb') as f:
+            f.write(part.get_payload(decode=True))
+try:
+    load_qr()
+except FileNotFoundError:
+    print('No QR code found')
+idle_screen()
 
 while True:
     try:
@@ -106,9 +116,9 @@ while True:
             print(p)
             if p.amount >= s.price and s.user_phrase.lower() in p.note.lower():
                 print(f'DISPENSE BEER FOR "{p.actor}"')
-                update(f'This beer is for\n"{p.actor}"')
+                dispense_screen(p.actor)
                 dispense_beer()
-                update(idle_phrase)
+                idle_screen()
         sleep(5)
     except Exception as e:
         print(e)
