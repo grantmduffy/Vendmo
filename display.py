@@ -1,4 +1,4 @@
-from lib_tft24T import TFT24T, Buffer
+from lib_tft24T import TFT24T, get_buffer
 import spidev
 from RPi import GPIO
 from PIL import Image, ImageFont, ImageDraw
@@ -34,7 +34,7 @@ def idle_screen():
     TFT.clear()
     d.text((10, 10), idle_phrase, fill=(255, 255, 255), font=font)
     if qr_code is not None:
-        Buffer.paste(qr_code, (40, 10))
+        get_buffer().paste(qr_code, (40, 10))
     TFT.display()
 
 

@@ -391,6 +391,10 @@ def _textwrapped(self, position, text1, length, height, font, fill="white"):
         y += height
     # example:  draw.textwrapped((2,0), "but a lot longer", 50, 18, myFont, "black")
 
+
+def get_buffer():
+    return Buffer
+
 #        All colours may be any notation:
 #        (255,0,0)  =red    (R, G, B)
 #        0x0000FF   =red    BBGGRR
