@@ -34,7 +34,7 @@ def idle_screen():
     TFT.clear()
     d.text((10, 10), idle_phrase, fill=(255, 255, 255), font=font)
     if qr_code is not None:
-        get_buffer().paste(qr_code, (45, 40))
+        get_buffer().paste(qr_code, (60, 60))
     TFT.display()
 
 
