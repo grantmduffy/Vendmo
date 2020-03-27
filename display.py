@@ -21,7 +21,7 @@ TFT.clear()
 d = TFT.draw()
 idle_phrase = f'Venmo {s.venmo_user} ${s.price:.2f}\nwith "{s.user_phrase}" in the caption'
 qr_code = None
-scale = 3
+scale = 4
 
 
 def load_qr():
@@ -34,7 +34,7 @@ def idle_screen():
     TFT.clear()
     d.text((10, 10), idle_phrase, fill=(255, 255, 255), font=font)
     if qr_code is not None:
-        get_buffer().paste(qr_code, (40, 10))
+        get_buffer().paste(qr_code, (45, 40))
     TFT.display()
 
 
