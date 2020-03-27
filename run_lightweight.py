@@ -91,7 +91,8 @@ mail = imaplib.IMAP4_SSL(s.imap_server)
 mail.login(s.email_address, s.email_password)
 mail.select('inbox')
 
-_, data = mail.fetch(id, '(RFC822)')
+_, ids = mail.search(None, '(SUBJECT "Link to my Venmo profile")')
+_, data = mail.fetch(ids[0], '(RFC822)')
 e = email.message_from_bytes(data[0][1])
 for part in e.walk():
     if part.get_content_maintype() == 'image':
