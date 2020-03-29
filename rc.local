@@ -17,6 +17,6 @@ git checkout master
 git pull
 sudo cp rc.local /etc/rc.local
 sudo rm /home/pi/main_output.log
-sudo bash -c "python3 run_lightweight.py > main_output.log; python3 after_terminate.py" &
+sudo bash -c "python3 run_lightweight.py > main_output.log 2>&1; python3 after_terminate.py" &
 
 exit 0
