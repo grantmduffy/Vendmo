@@ -6,15 +6,10 @@ from html.parser import HTMLParser
 from time import sleep
 from sys import platform
 import email
-import atexit
 
 if platform == 'linux':
     import wiringpi as wp
     from display import idle_screen, dispense_screen, load_qr, show_error
-
-
-def on_exit():
-    show_error('Testing end of script execution')
 
 
 class EmailParser(HTMLParser, ABC):
