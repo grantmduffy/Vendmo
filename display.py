@@ -34,11 +34,17 @@ def idle_screen():
     TFT.clear()
     d.text((10, 10), idle_phrase, fill=(255, 255, 255), font=font)
     if qr_code is not None:
-        get_buffer().paste(qr_code, (60, 60))
+        get_buffer().paste(qr_code, (80, 70))
     TFT.display()
 
 
 def dispense_screen(actor):
     TFT.clear()
     d.text((10, 10), f'This beer is for\n"{actor}"', fill=(255, 255, 255), font=font)
+    TFT.display()
+
+
+def show_error(text):
+    TFT.clear()
+    d.multiline_text((10, 10), text)
     TFT.display()
