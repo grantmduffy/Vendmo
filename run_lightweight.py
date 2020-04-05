@@ -108,6 +108,7 @@ idle_screen()
 
 while True:
     try:
+        mail.select('inbox')
         _, ids = mail.search(None, '(OR FROM venmo@venmo.com FROM grantmduffy@gmail.com '
                                    f'SUBJECT "paid you" UNSEEN)')
         for id in ids[0].split():
